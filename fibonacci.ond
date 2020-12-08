@@ -1,0 +1,7 @@
+lda 1
+swp
+lda 0
+
+add
+swp
+jmp -2
