@@ -7,8 +7,6 @@ def parse_instruction(string):
             return Inc()
         if ins[0] == "dec":
             return Dec()
-        if ins[0] == "swp":
-            return Swp()
         if ins[0] == "add":
             return Add()
 
@@ -18,6 +16,8 @@ def parse_instruction(string):
             return Lda(int(ins[1]))
         if ins[0] == "jmp":
             return Jmp(int(ins[1]))
+        if ins[0] == "swp":
+            return Swp(ins[1])
 
     if len(ins) == 3:
         if ins[0] == "jeq":
@@ -74,21 +74,6 @@ class Dec(Instruction):
     def asstring(self):
         return self.name
 
-class Swp(Instruction):
-    name = "swp"
-    def __init__(self):
-        return
-
-    def exec(self, system):
-        temp = system.a
-        system.a = system.b
-        system.b = temp
-        system.pc += 1
-        return system
-
-    def asstring(self):
-        return self.name
-
 class Add(Instruction):
     name = "add"
     def __init__(self):
@@ -134,6 +119,29 @@ class Jmp(Instruction):
 
     def asstring(self):
         return self.name+ " " +str(self.value)
+
+class Swp(Instruction):
+    name = "swp"
+    valid_registers = ["b", "c"]
+    def __init__(self, register):
+        if register not in Swp.valid_registers:
+            raise UserWarning("invalid instruction")
+        self.register = register
+        return
+
+    def exec(self, system):
+        temp = system.a
+        if self.register == Swp.valid_registers[0]:
+            system.a = system.b
+            system.b = temp
+        elif self.register == Swp.valid_registers[1]:
+            system.a = system.c
+            system.c = temp
+        system.pc += 1
+        return system
+
+    def asstring(self):
+        return self.name + " " + self.register
 
 
 

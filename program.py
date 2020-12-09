@@ -28,6 +28,7 @@ class Program(object):
                 print("Program ended (end of instructions)")
                 break
             self.instructions[system.pc].exec(system)
+        print(system.asdict())
         print("Program done")
 
     def debug(self, system):
@@ -43,4 +44,5 @@ class Program(object):
             if user_input == "e":
                 exit()
             self.instructions[system.pc].exec(system)
+        print(system.asdict())
         print("Program done")

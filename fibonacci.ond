@@ -1,7 +1,21 @@
+lda 6
+swp c
+
+;input:  c: n
+;output: a: fib(n)
+
 lda 1
-swp
+swp b
 lda 0
 
+;__loop__
+swp c
+dec
+jeq 0 5 ; __end__
+swp c
+
 add
-swp
-jmp -2
+swp b
+jmp -6 ; __loop__
+;__end__
+swp c
